@@ -11,17 +11,17 @@ const db = getDatabase(app);
 
 export function SignUpMethod(body) {
   return new Promise((resolve, reject) => {
-    if (!body.email || !body.password || !body.roll || !body.username) {
+    if (!body.email || !body.password || !body.username) {
       reject("Must fill all the fields!");
     } else {
-      createUserWithEmailAndPassword(auth, body.email, body.password, body.roll)
+      createUserWithEmailAndPassword(auth, body.email, body.password)
         .then((res) => {
           let id = res.user.uid;
           body.id = id;
           const reference = ref(db, `users/${id}`);
           set(reference, body)
             .then((user) => {
-              resolve(body.roll);
+              resolve("user successfully signed up");
             })
             .catch((err) => {
               reject(err);
