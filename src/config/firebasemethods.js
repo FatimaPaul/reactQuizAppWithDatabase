@@ -3,7 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getDatabase, onValue, ref, set } from "firebase/database";
+import { getDatabase, onValue, ref, set, push } from "firebase/database";
 import { app } from "./firebaseconfig";
 
 const auth = getAuth(app);
@@ -51,5 +51,29 @@ export function LoginMethod(body) {
         })
         .catch((err) => console.log(err));
     }
+  });
+}
+
+export function fbAdd(node, body) {
+  return new Promise((resolve, reject) => {
+    const bodyId = push(ref(db, `${node}/`)).key;
+    body.id = bodyId;
+    const reference = ref(db, `${node}/${body.id}`);
+    set(reference, body)
+      .then((res) => resolve("data send successfully"))
+      .catch((err) => reject(err));
+  });
+}
+
+export function fbGet(node, id) {
+  return new Promise((resolve, reject) => {
+    const reference = ref(db, `${node}/${id ? id : ""}`);
+    onValue(reference, (data) => {
+      if (data.exists()) {
+        resolve(data.val());
+      } else {
+        reject("no data found");
+      }
+    });
   });
 }

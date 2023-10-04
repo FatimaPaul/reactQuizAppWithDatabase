@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import { EmailOutlined, Password } from "@mui/icons-material";
+import { EmailOutlined } from "@mui/icons-material";
 
 export default function Login() {
   const [loginState, setLoginState] = useState({});
